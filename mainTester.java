@@ -1,14 +1,16 @@
 package com.CarbonProject;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+
+import org.json.JSONException;
+
 public class mainTester {
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws MalformedURLException, IOException, JSONException {
 		
-		System.out.println(Researcher.getAvgCO2("1975"));
-		
-		System.out.println("Between 1960 and 2018 there was a CO2 ppm increase of: " + Researcher.getRateOfChange("1960", "2018") + " per year on average");
-		
-		System.out.println("CO2 in 2060 is: " + Researcher.getFutureCO2("2008", "2018", "2060"));
+		System.out.println(Researcher.getCurrentCO2());
+		graphSources.encodeFutureAtMinus5();
 	}
 
 }

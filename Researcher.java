@@ -1,22 +1,55 @@
 package com.CarbonProject;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Scanner;
 
 public class Researcher {
+	
+		
+	public static void saveFileFromUrl(String fileName, String fileUrl) throws MalformedURLException, IOException {
+				 BufferedInputStream in = null;
+				 FileOutputStream fout = null;
+				 try {
+				 in = new BufferedInputStream(new URL(fileUrl).openStream());
+				 fout = new FileOutputStream(fileName);
 
-	public static double getCurrentCO2 () {
+				byte data[] = new byte[1024];
+				 int count;
+				 while ((count = in.read(data, 0, 1024)) != -1) {
+				 fout.write(data, 0, count);
+				 }
+				 } finally {
+				 if (in != null)
+				 in.close();
+				 if (fout != null)
+				 fout.close();
+				 }
+				 }
+
+
+	public static double getCurrentCO2 () throws FileNotFoundException {
 	
 		Scanner scnr;
 		scnr = null;
+	
+		File f = new File("C:\\Users\\Andrew W Brogan\\eclipse-workspace\\CO2Project\\CO2Monthly");
+		scnr = new Scanner(f);
 
-		try {
+		/* try {
 			   URL url = new URL("ftp://aftp.cmdl.noaa.gov/products/trends/co2/co2_mm_mlo.txt");
 			   scnr = new Scanner(url.openStream());
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
+		} */
 		
 		int countLines = 0;
 		while ( scnr.hasNextLine() ) {
@@ -25,13 +58,14 @@ public class Researcher {
 		} 
 		
 		scnr.reset();
+		scnr = new Scanner(f);
 		
-		try {
+	/*	try {
 			   URL url = new URL("ftp://aftp.cmdl.noaa.gov/products/trends/co2/co2_mm_mlo.txt");
 			   scnr = new Scanner(url.openStream());
 			} catch (IOException ex) {	
 				ex.printStackTrace();
-			}
+			} */
 		
 		for (int i = 0; i < countLines - 1; ++i) {
 			scnr.nextLine();
@@ -41,11 +75,12 @@ public class Researcher {
 		scnr.next();
 		scnr.next();
 		
-		return Double.parseDouble(scnr.next());
-		
+		return Double.parseDouble(scnr.next()); 
+	
 	}
 	
-	public static double getAvgCO2 (String yearDate) {
+
+	public static double getAvgCO2 (String yearDate) throws FileNotFoundException {
 	
 		//Parsing error at 1975
 	if (Integer.valueOf(yearDate) ==  1975) {
@@ -57,13 +92,9 @@ public class Researcher {
 	Scanner scnr;
 	scnr = null;
 	
-	try {
-		   URL url = new URL("ftp://aftp.cmdl.noaa.gov/products/trends/co2/co2_mm_mlo.txt");
-		   scnr = new Scanner(url.openStream());
-		}
-		catch(IOException ex) {
-		   ex.printStackTrace(); 
-		}
+	File f = new File("C:\\Users\\Andrew W Brogan\\eclipse-workspace\\CO2Project\\CO2Monthly");
+	scnr = new Scanner(f);
+	
 	
 	int arrayCount = 0;
 	while (scnr.hasNext()) {
@@ -93,7 +124,7 @@ public class Researcher {
 	return totalCO2;
 }
 	
-	public static double getRateOfChange (String yearOne, String yearTwo) {
+	public static double getRateOfChange (String yearOne, String yearTwo) throws FileNotFoundException {
 		
 		double avgCO2One = getAvgCO2(yearOne);
 		double avgCO2Two = getAvgCO2(yearTwo);
@@ -106,7 +137,7 @@ public class Researcher {
 		return rateOfChange;
 	}
 	
-	public static double getFutureCO2 (String yearOne, String yearTwo, String yearDate) {
+	public static double getFutureCO2 (String yearOne, String yearTwo, String yearDate) throws FileNotFoundException {
 		double rateOfChange = getRateOfChange(yearOne, yearTwo);
 		double yearTwoDub = Double.valueOf(yearTwo);
 		double yearDateDub = Double.valueOf(yearDate);
@@ -114,19 +145,25 @@ public class Researcher {
 		return rateOfChange * (yearDateDub - yearTwoDub) + getAvgCO2(yearTwo);
 	}
 	
-	public static double getFutureCO2MinusFive (String yearOne, String yearTwo, String yearDate) {
+	public static double[] generateFutureCO2Minus5 (String yearOne, String yearTwo) throws FileNotFoundException {
 		
-		double rateOfChange = getRateOfChange(yearOne, yearTwo);
-		double yearTwoDub = Double.valueOf(yearTwo);
-		double yearDateDub = Double.valueOf(yearDate);
 		
+		double[] rates = new double[51];
 		double[] co2Yearly = new double[51];
 		
-		double rate = getRateOfChange("2017","2018");
-		double rate0 = rate * 0.95;
-		co2Yearly[0] = getCurrentCO2() + rate0;
+		double rate = getRateOfChange(yearOne, yearTwo);
+		rates[0] = rate;
+		rates[1] = rates[0] * 0.95;
+		co2Yearly[0] = getCurrentCO2();
+		co2Yearly[1] = co2Yearly[0] + rates[1];
 
-		double rate1 = rate0 * 0.95;
+		for (int j = 2; j < 51; ++j)
+		{
+			rates[j] = rates[j-1] * 0.95;
+			co2Yearly[j] = co2Yearly[j-1] + rates[j];
+		}
+		return Arrays.copyOf(co2Yearly, 51);
+	/*	double rate1 = rate0 * 0.95;
 		co2Yearly[1] = co2Yearly[0] + rate1;
 
 		double rate2 = rate1 * 0.95;
@@ -157,7 +194,7 @@ public class Researcher {
 		co2Yearly[10] = co2Yearly[9] + rate10;
 		
 		double rate11 = rate9 * 0.95;
-		co2Yearly[11] = co2Yearly[9] + rate11;
+		co2Yearly[11] = co2Yearly[10] + rate11;
 		
 		double rate12 = rate11 * 0.95;
 		co2Yearly[12] = co2Yearly[11] + rate12;
@@ -243,13 +280,25 @@ public class Researcher {
 		if (Integer.valueOf(yearDate) == 2039) {
 			return co2Yearly[19];
 		}
-		
-		return -1.0;
+		*/
+	//	return -1.0;
 		
 		
 		
 		
 		
 	}
-	
+
+	public static double getFutureCO2Minus5 (String yearOne, String yearTwo, String yearDate) throws FileNotFoundException {
+		
+		int year = Calendar.getInstance().get(Calendar.YEAR);
+		int yearInt = Integer.valueOf(yearDate);
+		
+		yearInt = yearInt - year;
+		
+		double[] values = generateFutureCO2Minus5(yearOne, yearTwo);
+		return values[yearInt];
+		
+		
+	}
 }
