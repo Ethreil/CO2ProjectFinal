@@ -28,7 +28,8 @@ public class graphSources {
 		{
 			String intI = Integer.toString(i);
 			
-			futureCurrent.put(intI, Double.toString(Researcher.getFutureCO2(yearOne, yearTwo, intI)) );
+			futureCurrent.append("Year", intI);
+			futureCurrent.append("CO2", Researcher.getFutureCO2(yearOne, yearTwo, intI) );
 		}
 		
 		File file = new File("FutureAtCurrentRate.json");

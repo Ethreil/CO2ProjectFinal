@@ -41,7 +41,7 @@ public class Researcher {
 		Scanner scnr;
 		scnr = null;
 	
-		File f = new File("C:\\Users\\Andrew W Brogan\\eclipse-workspace\\CO2Project\\CO2Monthly");
+		File f = new File("C:\\Users\\grace\\eclipse-workspace\\CO2Project\\CO2Monthly.txt");
 		scnr = new Scanner(f);
 
 		/* try {
@@ -92,7 +92,7 @@ public class Researcher {
 	Scanner scnr;
 	scnr = null;
 	
-	File f = new File("C:\\Users\\Andrew W Brogan\\eclipse-workspace\\CO2Project\\CO2Monthly");
+	File f = new File("C:\\Users\\grace\\eclipse-workspace\\CO2Project\\CO2Monthly.txt");
 	scnr = new Scanner(f);
 	
 	

@@ -9,8 +9,7 @@ public class mainTester {
 	
 	public static void main(String[] args) throws MalformedURLException, IOException, JSONException {
 		
-		System.out.println(Researcher.getCurrentCO2());
-		graphSources.encodeFutureAtMinus5();
+	graphSources.encodeFutureAtCurrentRate();
 	}
 
 }
