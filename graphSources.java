@@ -15,7 +15,7 @@ public class graphSources {
 	public static void encodeFutureAtCurrentRate () throws JSONException, IOException {
 		
 		int year = Calendar.getInstance().get(Calendar.YEAR);
-		int year1 = year - 51;
+		int year1 = year - 2;
 		int year2 = year - 1;
 		String yearOne = Integer.toString(year1);
 		String yearTwo = Integer.toString(year2);
@@ -24,12 +24,11 @@ public class graphSources {
 		JSONObject futureCurrent = new org.json.JSONObject();
 		
 		
-		for (int i = 2023; i < 2070; i = i + 4)
+		for (int i = year + 4; i < year + 50; i = i + 4)
 		{
 			String intI = Integer.toString(i);
 			
-			futureCurrent.append("Year", intI);
-			futureCurrent.append("CO2", Researcher.getFutureCO2(yearOne, yearTwo, intI) );
+			futureCurrent.put(intI, Researcher.getFutureCO2(yearOne, yearTwo, intI) );
 		}
 		
 		File file = new File("FutureAtCurrentRate.json");
@@ -41,7 +40,7 @@ public class graphSources {
 	
 	public static void encodeFutureAtRateLastFiveDecades () throws JSONException, IOException {
 		int year = Calendar.getInstance().get(Calendar.YEAR);
-		int year1 = year - 2;
+		int year1 = year - 51;
 		int year2 = year - 1;
 		String yearOne = Integer.toString(year1);
 		String yearTwo = Integer.toString(year2);
@@ -50,11 +49,11 @@ public class graphSources {
 		JSONObject futureLastFive = new org.json.JSONObject();
 		
 		
-		for (int i = 2023; i < 2070; i = i + 4)
+		for (int i = year + 4; i < year + 50; i = i + 4)
 		{
 			String intI = Integer.toString(i);
 			
-			futureLastFive.put(intI, Double.toString(Researcher.getFutureCO2(yearOne, yearTwo, intI)) );
+			futureLastFive.put(intI, Researcher.getFutureCO2(yearOne, yearTwo, intI) );
 		}
 		
 		File file = new File("FutureAtRateLastFiveDecades.json");
@@ -75,11 +74,11 @@ public class graphSources {
 		JSONObject futureAtMinus5 = new org.json.JSONObject();
 		
 		
-		for (int i = 2023; i < 2070; i = i + 4)
+		for (int i = year + 4; i < year + 50; i = i + 4)
 		{
 			String intI = Integer.toString(i);
 			
-			futureAtMinus5.put(intI, Double.toString(Researcher.getFutureCO2Minus5(yearOne, yearTwo, intI)) );
+			futureAtMinus5.put(intI, Researcher.getFutureCO2Minus5(yearOne, yearTwo, intI) );
 		}
 		
 		File file = new File("FutureAtMinus5.json");
@@ -88,5 +87,26 @@ public class graphSources {
 	 	JSONValue.writeJSONString(futureAtMinus5, fileWriter);
 		fileWriter.close();
 	}
+	
+	public static void encodePast () throws JSONException, IOException {
+		int year = Calendar.getInstance().get(Calendar.YEAR);
+		
+		JSONObject pastData = new org.json.JSONObject();
+		
+		for (int i = 1959; i < year ; i = i + 4)
+		{
+			String intI = Integer.toString(i);
+			
+			pastData.put(intI, Researcher.getAvgCO2(intI) );
+		}
+		
+		File file = new File("pastData.json");
+		file.createNewFile();
+		FileWriter fileWriter = new FileWriter(file);
+	 	JSONValue.writeJSONString(pastData, fileWriter);
+		fileWriter.close();
+		
+	}
+	
 	
 }
