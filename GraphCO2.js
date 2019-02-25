@@ -1,21 +1,33 @@
 google.charts.load('45', {
-    callback: drawCO2Charts,
+  //  callback: drawCO2Charts,
     packages:['corechart']
 });
 
-function drawCO2Charts () {
+
+
 
     function drawChart1() {
 
         var data = new google.visualization.DataTable();
 
         data.addColumn('string', 'Year');
-        data.addColumn('number', 'CO2');
+        data.addColumn('number', 'CO2 Actual');
+        data.addColumn('number', 'CO2 Projected');
 
+
+        var year = 2019;
         var stringI;
-        for (var i = 2023; i < 2070; i = i + 4) {
+        for (var i = 1959; i < year ; i = i + 4)
+        {
+           stringI = i.toString();
+           data.addRow([stringI, dataPast[stringI], null ]);
+        }
+
+        data.addRow([year.toString(), dataPresent[year.toString()], dataPresent[year.toString()] ]);
+
+        for (var i = year + 4; i < year + 50; i = i + 4) {
             stringI = i.toString();
-            data.addRow([stringI, dataFutureAtCurrentRate[stringI]]);
+            data.addRow([stringI, null, dataFutureAtCurrentRate[stringI] ]);
         }
 
         var options = {
@@ -23,10 +35,14 @@ function drawCO2Charts () {
             curveType: 'function',
             legend: {position: 'bottom'},
             width: 900,
-            height: 500
+            height: 500,
+            series :
+                {
+                    1: { lineDashStyle: [10, 2] }
+                }
         };
 
-        var chart = new google.visualization.LineChart(document.getElementById('linechart_FutureAtCurrentRate'));
+        var chart = new google.visualization.LineChart(document.getElementById('linechart_'));
 
         chart.draw(data, options);
 
@@ -37,12 +53,23 @@ function drawCO2Charts () {
         var data = new google.visualization.DataTable();
 
         data.addColumn('string', 'Year');
-        data.addColumn('number', 'CO2');
+        data.addColumn('number', 'CO2 Actual');
+        data.addColumn('number', 'CO2 Projected');
 
+
+        var year = 2019;
         var stringI;
+        for (var i = 1959; i < year ; i = i + 4)
+        {
+            stringI = i.toString();
+            data.addRow([stringI, dataPast[stringI], null ]);
+        }
+
+        data.addRow([year.toString(), dataPresent[year.toString()], dataPresent[year.toString()] ]);
+
         for (var i = 2023; i < 2070; i = i + 4) {
             stringI = i.toString();
-            data.addRow([stringI, dataFutureAtMinus5[stringI]]);
+            data.addRow([stringI, null, dataFutureAtMinus5[stringI]]);
         }
 
         var options = {
@@ -50,10 +77,14 @@ function drawCO2Charts () {
             curveType: 'function',
             legend: {position: 'bottom'},
             width: 900,
-            height: 500
+            height: 500,
+            series :
+                {
+                    1: { lineDashStyle: [10, 2] }
+                }
         };
 
-        var chart = new google.visualization.LineChart(document.getElementById('linechart_FutureAtMinus5'));
+        var chart = new google.visualization.LineChart(document.getElementById('linechart_'));
 
         chart.draw(data, options);
 
@@ -64,12 +95,23 @@ function drawCO2Charts () {
         var data = new google.visualization.DataTable();
 
         data.addColumn('string', 'Year');
-        data.addColumn('number', 'CO2');
+        data.addColumn('number', 'CO2 Actual');
+        data.addColumn('number', 'CO2 Projected');
 
+
+        var year = 2019;
         var stringI;
+        for (var i = 1959; i < year ; i = i + 4)
+        {
+            stringI = i.toString();
+            data.addRow([stringI, dataPast[stringI], null ]);
+        }
+
+        data.addRow([year.toString(), dataPresent[year.toString()], dataPresent[year.toString()] ]);
+
         for (var i = 2023; i < 2070; i = i + 4) {
             stringI = i.toString();
-            data.addRow([stringI, dataFutureLastFiveDecade[stringI]]);
+            data.addRow([stringI, null, dataFutureLastFiveDecade[stringI] ]);
         }
 
         var options = {
@@ -77,16 +119,18 @@ function drawCO2Charts () {
             curveType: 'function',
             legend: {position: 'bottom'},
             width: 900,
-            height: 500
+            height: 500,
+            series :
+                {
+                    1: { lineDashStyle: [10, 2] }
+                }
         };
 
-        var chart = new google.visualization.LineChart(document.getElementById('linechart_FutureAtRateLastFiveDecade'));
+        var chart = new google.visualization.LineChart(document.getElementById('linechart_'));
 
         chart.draw(data, options);
 
     }
-    drawChart1();
-    drawChart2();
-    drawChart3();
 
-}
+
+
