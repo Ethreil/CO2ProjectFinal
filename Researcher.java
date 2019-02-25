@@ -41,7 +41,7 @@ public class Researcher {
 		Scanner scnr;
 		scnr = null;
 	
-		File f = new File("C:\\Users\\grace\\eclipse-workspace\\CO2Project\\CO2Monthly.txt");
+		File f = new File("C:\\Users\\Andrew W Brogan\\eclipse-workspace\\CO2Project\\CO2Monthly");
 		scnr = new Scanner(f);
 
 		/* try {
@@ -82,17 +82,20 @@ public class Researcher {
 
 	public static double getAvgCO2 (String yearDate) throws FileNotFoundException {
 	
-		//Parsing error at 1975
-	if (Integer.valueOf(yearDate) ==  1975) {
-		return 331.11;
-	}
+		//Parsing error at 1975 & 1974
+		if (Integer.valueOf(yearDate) ==  1975) {
+			return 331.11;
+		}
+		if (Integer.valueOf(yearDate) ==  1974) {
+			return 330.185;
+		}
 	
 	double[] valuesToAverage = new double[200];
 	
 	Scanner scnr;
 	scnr = null;
 	
-	File f = new File("C:\\Users\\grace\\eclipse-workspace\\CO2Project\\CO2Monthly.txt");
+	File f = new File("C:\\Users\\Andrew W Brogan\\eclipse-workspace\\CO2Project\\CO2Monthly");
 	scnr = new Scanner(f);
 	
 	
