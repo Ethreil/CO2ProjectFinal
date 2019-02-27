@@ -5,12 +5,17 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Scanner;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.simple.JSONValue;
 
 public class Researcher {
 	
@@ -41,7 +46,7 @@ public class Researcher {
 		Scanner scnr;
 		scnr = null;
 	
-		File f = new File("C:\\Users\\Andrew W Brogan\\eclipse-workspace\\CO2Project\\CO2Monthly");
+		File f = new File("CO2Monthly");
 		scnr = new Scanner(f);
 
 		/* try {
@@ -95,7 +100,7 @@ public class Researcher {
 	Scanner scnr;
 	scnr = null;
 	
-	File f = new File("C:\\Users\\Andrew W Brogan\\eclipse-workspace\\CO2Project\\CO2Monthly");
+	File f = new File("CO2Monthly");
 	scnr = new Scanner(f);
 	
 	
@@ -304,4 +309,6 @@ public class Researcher {
 		
 		
 	}
+
+
 }

@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Calendar;
+import java.util.Scanner;
 
 import org.json.JSONException;
 import org.json.JSONObject;	
@@ -108,5 +109,75 @@ public class graphSources {
 		
 	}
 	
+	public static void encodeCurrent () throws JSONException, IOException {
+		int year = Calendar.getInstance().get(Calendar.YEAR);
+		String yearString = Integer.toString(year);
+		JSONObject currentCO2 = new org.json.JSONObject();
+		
+		currentCO2.put(yearString, Researcher.getCurrentCO2());
+		
+		File file = new File("currentData.json");
+		file.createNewFile();
+		FileWriter fileWriter = new FileWriter(file);
+	 	JSONValue.writeJSONString(currentCO2, fileWriter);
+		fileWriter.close();
+	}
+	
+	public static void encodeCO2BP () throws NumberFormatException, JSONException, IOException {
+		
+		Scanner scnr;
+		scnr = null;
+		
+		File f = new File("CO2BP");
+		scnr = new Scanner(f);
+			
+		double[] co2Year = new double[2000];
+		double[] co2Value = new double[2000];
+		int year = Calendar.getInstance().get(Calendar.YEAR);
+		double yearDifferenceBeforePhysics = (double) (year - 1950);
+		
+		int count = 0;
+		while (count < 139) {
+			scnr.nextLine();
+			++count;
+		}
+		count = 0;
+		while(count < 1900) {
+
+			co2Year[count] = yearDifferenceBeforePhysics + Double.parseDouble(scnr.next());
+			co2Value[count] = Double.parseDouble(scnr.next());
+			++count;
+			scnr.nextLine();	
+		} 
+			
+		System.out.print(co2Value[500]);
+		
+		JSONObject co2BPJSON = new org.json.JSONObject();
+		count = 0;
+		while (count < 1900) {
+			co2BPJSON.put(Double.toString(co2Year[count]), co2Value[count]);
+			++count;
+		}
+		
+		File file = new File("CO2BP.json");
+		file.createNewFile();
+		FileWriter fileWriter = new FileWriter(file);
+	 	JSONValue.writeJSONString(co2BPJSON, fileWriter);
+		fileWriter.close();
+		
+		JSONObject co2YearKeys = new org.json.JSONObject();
+		count = 0;
+		while (count < 1900) {
+			co2YearKeys.put(Integer.toString(count), Double.toString(co2Year[count]) );
+			++count;
+		}
+		
+		File file2 = new File("CO2BPKeys.json");
+		file2.createNewFile();
+		FileWriter fileWriter2 = new FileWriter(file2);
+	 	JSONValue.writeJSONString(co2YearKeys, fileWriter2);
+		fileWriter.close();
+		
+	}
 	
 }
